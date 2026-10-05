@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TravelMate - Explore India</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        ✈️ Travel<span>Mate</span>
+    </div>
+
+    <div class="nav-links">
+
+        <a href="#home">Home</a>
+
+        <a href="#mapSection">🗺️ Maps</a>
+
+        <a href="#routes">🛣️ Routes</a>
+
+        <a href="#destinations">📍 Destinations</a>
+
+        <a href="#hotels">🏨 Hotels & Stays</a>
+
+    </div>
+
+    <button class="login-btn" onclick="openLogin()">
+        Login
+    </button>
+
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <div class="hero-small">
+            WELCOME TO TRAVELMATE
+        </div>
+
+        <h1>
+            Explore <span>Incredible India</span> 🇮🇳
+        </h1>
+
+        <p>
+            Discover beautiful destinations, find hotels,
+            plan routes and make your perfect trip with TravelMate.
+        </p>
+
+        <div class="hero-search">
+
+            <input
+                type="text"
+                id="heroSearch"
+                placeholder="Search destination..."
+            >
+
+            <button onclick="searchFromHero()">
+                🔎 Search
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= DESTINATIONS ================= -->
+
+<section class="section" id="destinations">
+
+    <div class="section-heading">
+
+        <p>DISCOVER INDIA</p>
+
+        <h2>Popular Destinations</h2>
+
+        <span>
+            Explore the best places India has to offer.
+        </span>
+
+    </div>
+
+
+    <div class="browse-controls">
+
+        <input
+            type="text"
+            id="browseSearch"
+            placeholder="Search destination or state..."
+        >
+
+        <select id="budgetFilter">
+
+            <option value="all">
+                All Budgets
+            </option>
+
+            <option value="5000">
+                Under ₹5,000
+            </option>
+
+            <option value="7000">
+                Under ₹7,000
+            </option>
+
+            <option value="10000">
+                Under ₹10,000
+            </option>
+
+            <option value="15000">
+                Under ₹15,000
+            </option>
+
+        </select>
+
+
+        <select id="sortFilter">
+
+            <option value="default">
+                Sort By
+            </option>
+
+            <option value="name">
+                Name
+            </option>
+
+            <option value="low">
+                Budget: Low to High
+            </option>
+
+            <option value="high">
+                Budget: High to Low
+            </option>
+
+            <option value="rating">
+                Rating
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="category-buttons">
+
+        <button class="category active" data-category="all">
+            All
+        </button>
+
+        <button class="category" data-category="temple">
+            🛕 Temples
+        </button>
+
+        <button class="category" data-category="beach">
+            🏖️ Beaches
+        </button>
+
+        <button class="category" data-category="mountain">
+            🏔️ Mountains
+        </button>
+
+        <button class="category" data-category="nature">
+            🌿 Nature
+        </button>
+
+        <button class="category" data-category="historical">
+            🏛️ Historical
+        </button>
+
+        <button class="category" data-category="city">
+            🌆 Cities
+        </button>
+
+    </div>
+
+
+    <div
+        class="destination-grid"
+        id="destinationGrid">
+    </div>
+
+
+    <div
+        class="no-results"
+        id="noResults">
+
+        No destinations found.
+
+    </div>
+
+</section>
+
+
+<!-- ================= MAP ================= -->
+
+<section class="section map-section" id="mapSection">
+
+    <div class="section-heading">
+
+        <p>PLAN YOUR JOURNEY</p>
+
+        <h2>🗺️ Explore India on Map</h2>
+
+        <span>
+            Select your starting city and destination.
+        </span>
+
+    </div>
+
+
+    <div class="route-search">
+
+        <input
+            type="text"
+            id="fromCity"
+            placeholder="Starting city - Chennai"
+        >
+
+        <input
+            type="text"
+            id="toCity"
+            placeholder="Destination - Goa"
+        >
+
+        <button
+            class="primary-btn"
+            onclick="showRoute()">
+
+            🗺️ Find Route
+
+        </button>
+
+    </div>
+
+
+    <div id="map"></div>
+
+
+    <div
+        class="route-info"
+        id="routeInfo">
+
+        <h3>
+            🧭 Your Route
+        </h3>
+
+        <p id="routeText"></p>
+
+        <button
+            class="primary-btn"
+            onclick="openGoogleMaps()">
+
+            Open Route in Google Maps
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= HOTELS ================= -->
+
+<section class="section hotels-section" id="hotels">
+
+    <div class="section-heading">
+
+        <p>STAY COMFORTABLY</p>
+
+        <h2>🏨 Hotels & Stays</h2>
+
+        <span>
+            Find the perfect stay for your journey.
+        </span>
+
+    </div>
+
+
+    <div class="hotel-grid">
+
+
+        <!-- LUXURY -->
+
+        <div class="hotel-card hotel-one">
+
+            <div class="hotel-content">
+
+                <span>PREMIUM</span>
+
+                <h3>
+                    Luxury Hotels
+                </h3>
+
+                <p>
+                    Premium rooms and excellent service.
+                </p>
+
+                <button
+                    onclick="showHotels('luxury')">
+
+                    Explore Hotels
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- BUDGET -->
+
+        <div class="hotel-card hotel-two">
+
+            <div class="hotel-content">
+
+                <span>BUDGET FRIENDLY</span>
+
+                <h3>
+                    Budget Hotels
+                </h3>
+
+                <p>
+                    Comfortable stays at affordable prices.
+                </p>
+
+                <button
+                    onclick="showHotels('budget')">
+
+                    Explore Hotels
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- RESORTS -->
+
+        <div class="hotel-card hotel-three">
+
+            <div class="hotel-content">
+
+                <span>RELAX & ENJOY</span>
+
+                <h3>
+                    Resorts
+                </h3>
+
+                <p>
+                    Relaxing resorts in beautiful locations.
+                </p>
+
+                <button
+                    onclick="showHotels('resort')">
+
+                    Explore Resorts
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- HOTEL RESULTS -->
+
+    <div
+        class="hotel-results"
+        id="hotelResults">
+
+        <h2 id="hotelResultTitle"></h2>
+
+        <div id="hotelList"></div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ROUTES ================= -->
+
+<section class="section planner-section" id="routes">
+
+    <div class="section-heading">
+
+        <p>TRAVEL PLANNER</p>
+
+        <h2>🚗 Plan Your Route</h2>
+
+        <span>
+            Enter your starting point and destination.
+        </span>
+
+    </div>
+
+
+    <div class="planner-card">
+
+        <div class="form-group">
+
+            <label>
+                From
+            </label>
+
+            <input
+                type="text"
+                id="routeStart"
+                placeholder="Chennai"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                To
+            </label>
+
+            <input
+                type="text"
+                id="routeDestination"
+                placeholder="Pondicherry"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Travel Mode
+            </label>
+
+            <select id="travelMode">
+
+                <option value="driving">
+                    🚗 Driving
+                </option>
+
+                <option value="walking">
+                    🚶 Walking
+                </option>
+
+                <option value="bicycling">
+                    🚲 Cycling
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <button
+            class="primary-btn"
+            onclick="openRoute()">
+
+            🚗 Plan Route
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="section features-section">
+
+    <div class="section-heading">
+
+        <p>WHY TRAVELMATE</p>
+
+        <h2>Travel Made Easy</h2>
+
+    </div>
+
+
+    <div class="features">
+
+        <div class="feature">
+
+            <div>🗺️</div>
+
+            <h3>Smart Maps</h3>
+
+            <p>
+                Find destinations and plan your route easily.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div>🏨</div>
+
+            <h3>Hotels & Stays</h3>
+
+            <p>
+                Discover suitable accommodation options.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div>❤️</div>
+
+            <h3>Favorites</h3>
+
+            <p>
+                Save your favorite destinations.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div>🚗</div>
+
+            <h3>Route Planning</h3>
+
+            <p>
+                Quickly open your route in Google Maps.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= LOGIN MODAL ================= -->
+
+<div
+    class="modal"
+    id="loginModal">
+
+    <div class="modal-box">
+
+        <button
+            class="close-modal"
+            onclick="closeLogin()">
+
+            ×
+
+        </button>
+
+        <h2>
+            Login to TravelMate
+        </h2>
+
+        <input
+            type="email"
+            placeholder="Email"
+        >
+
+        <input
+            type="password"
+            placeholder="Password"
+        >
+
+        <button
+            class="primary-btn"
+            onclick="loginUser()">
+
+            Login
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-logo">
+        ✈️ TravelMate
+    </div>
+
+    <p>
+        Explore India. Plan Better. Travel More.
+    </p>
+
+    <p class="copyright">
+        © 2026 TravelMate. All rights reserved.
+    </p>
+
+</footer>
+
+
+<!-- LEAFLET JS -->
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
+<!-- YOUR JAVASCRIPT -->
+
+<script src="script.js"></script>
+<!-- ================= HOTEL DETAILS MODAL ================= -->
+
+<div class="modal" id="hotelModal">
+
+    <div class="modal-box hotel-modal-box">
+
+        <button
+            class="close-modal"
+            onclick="closeHotelModal()">
+
+            ×
+
+        </button>
+
+        <div class="hotel-modal-icon">
+            🏨
+        </div>
+
+        <h2 id="hotelModalName">
+            Hotel Name
+        </h2>
+
+        <p id="hotelModalLocation">
+            📍 Location
+        </p>
+
+        <p id="hotelModalRating">
+            ★★★★★
+        </p>
+
+        <h3 id="hotelModalPrice">
+            ₹5,000 / night
+        </h3>
+
+        <p class="hotel-description">
+            Enjoy a comfortable stay with excellent
+            service, modern facilities and a convenient
+            location.
+        </p>
+
+        <button
+            class="primary-btn"
+            onclick="bookNow()">
+
+            🏨 Book This Hotel
+
+        </button>
+
+    </div>
+
+</div>
